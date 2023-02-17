@@ -306,7 +306,8 @@ static const CGFloat kTOCropViewControllerToolbarHeight = 44.0f;
 
     // Horizontal layout (eg landscape)
     if (!verticalLayout) {
-        frame.origin.x = kTOCropViewControllerToolbarHeight + insets.left;
+        CGFloat toobarHeight = (!self.toolbar.isHidden) ? kTOCropViewControllerToolbarHeight : 0;
+        frame.origin.x = toobarHeight + insets.left;
         frame.size.width = CGRectGetWidth(bounds) - frame.origin.x;
 		frame.size.height = CGRectGetHeight(bounds);
     }
@@ -314,12 +315,14 @@ static const CGFloat kTOCropViewControllerToolbarHeight = 44.0f;
         frame.size.height = CGRectGetHeight(bounds);
         frame.size.width = CGRectGetWidth(bounds);
 
-        // Set Y and adjust for height
-        if (self.toolbarPosition == TOCropViewControllerToolbarPositionBottom) {
-            frame.size.height -= (insets.bottom + kTOCropViewControllerToolbarHeight);
-        } else if (self.toolbarPosition == TOCropViewControllerToolbarPositionTop) {
-			frame.origin.y = kTOCropViewControllerToolbarHeight + insets.top;
-            frame.size.height -= frame.origin.y;
+        if (!self.toolbar.isHidden) {
+            // Set Y and adjust for height
+            if (self.toolbarPosition == TOCropViewControllerToolbarPositionBottom) {
+                frame.size.height -= (insets.bottom + kTOCropViewControllerToolbarHeight);
+            } else if (self.toolbarPosition == TOCropViewControllerToolbarPositionTop) {
+                frame.origin.y = kTOCropViewControllerToolbarHeight + insets.top;
+                frame.size.height -= frame.origin.y;
+            }
         }
     }
     
